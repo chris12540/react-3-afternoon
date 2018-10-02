@@ -1,23 +1,39 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import './Search.css';
+import "./Search.css";
 
-import SearchIcon from 'react-icons/lib/md/search';
+import SearchIcon from "react-icons/lib/md/search";
 
 //////////////////////////////////////////////////////// THIS COMPONENT IS BEING RENDERED IN THE *HEADER* COMPONENT
 
 export default class Search extends Component {
-  render() {
-    return (
-      <section className="Search__parent">
+	constructor() {
+		super();
+		query: "";
+	}
 
-        <div className="Search__content">
-          <input placeholder="Search Your Feed" />
+	search = () => {
+		const { query } = this.state;
+		const { searchFn } = this.props;
+		searchFn(query);
+		this.setState({ query: "" });
+	};
 
-          <SearchIcon id="Search__icon" />
-        </div>
-        
-      </section>
-    )
-  }
+	render() {
+		return (
+			<section className="Search__parent">
+				<div className="Search__content">
+					<input
+						placeholder="Search Your Feed"
+						onChange={e => this.setState({ query: e.target.value })}
+						onKeyPress={e => {
+							e.key == "Enter" ? this.search() : "";
+						}}
+					/>
+
+					<SearchIcon id="Search__icon" onClick={this.search} />
+				</div>
+			</section>
+		);
+	}
 }
